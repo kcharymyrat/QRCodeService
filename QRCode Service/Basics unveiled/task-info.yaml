@@ -1,0 +1,86 @@
+type: edu
+files:
+  - name: src/qrcodeapi/Application.java
+    visible: true
+    text: |
+      package qrcodeapi;
+      
+      import org.springframework.boot.SpringApplication;
+      import org.springframework.boot.autoconfigure.SpringBootApplication;
+      
+      @SpringBootApplication
+      public class Application {
+          public static void main(String[] args) {
+              SpringApplication.run(Application.class, args);
+          }
+      }
+    learner_created: false
+  - name: src/resources/application.properties
+    visible: true
+    learner_created: false
+  - name: test/QRCodeApiTest.java
+    visible: false
+    text: "import org.hyperskill.hstest.dynamic.DynamicTest;\nimport org.hyperskill.hstest.exception.outcomes.WrongAnswer;\n\
+    import org.hyperskill.hstest.mocks.web.response.HttpResponse;\nimport org.hyperskill.hstest.stage.SpringTest;\n\
+    import org.hyperskill.hstest.testcase.CheckResult;\n\npublic class QRCodeApiTest\
+    \ extends SpringTest {\n\n    @DynamicTest\n    CheckResult testGetHealth() {\n\
+    \        var url = \"/api/health\";\n        HttpResponse response = get(url).send();\n\
+    \n        checkStatusCode(\n                response.getRequest().getEndpoint(),\n\
+    \                response.getStatusCode(),\n                200);\n\n        return\
+    \ CheckResult.correct();\n    }\n\n    @DynamicTest\n    CheckResult testGetQrCode()\
+    \ {\n        var url = \"/api/qrcode\";\n        HttpResponse response = get(url).send();\n\
+    \n        checkStatusCode(\n                response.getRequest().getEndpoint(),\n\
+    \                response.getStatusCode(),\n                501);\n\n        return\
+    \ CheckResult.correct();\n    }\n\n    private void checkStatusCode(String endpoint,\
+    \ int actual, int expected) {\n        if (actual != expected) {\n           \
+    \ throw new WrongAnswer(\"\"\"\n                    Request: GET %s\n        \
+    \                                \n                    Response has incorrect\
+    \ status code:\n                    Expected %d, but responded with %d\n     \
+    \                                   \n                    \"\"\".formatted(endpoint,\
+    \ expected, actual)\n            );\n        }\n    }\n}\n"
+    learner_created: false
+  - name: build.gradle
+    visible: true
+    text: |
+      buildscript {
+          apply plugin: 'hyperskill'
+      
+          repositories {
+              mavenCentral()
+          }
+      
+          dependencies {
+              classpath "org.springframework.boot:spring-boot-gradle-plugin:$hs.spring.bootVersion"
+              classpath "io.spring.gradle:dependency-management-plugin:$hs.spring.dependencyManagementVersion"
+          }
+      }
+      
+      apply plugin: 'java'
+      apply plugin: 'org.springframework.boot'
+      apply plugin: 'io.spring.dependency-management'
+      
+      repositories {
+          mavenCentral()
+      }
+      
+      sourceSets.main.resources.srcDirs = ["src/resources"]
+      
+      dependencies {
+          implementation 'org.springframework.boot:spring-boot-starter'
+          implementation 'org.springframework.boot:spring-boot-starter-actuator'
+          implementation 'org.springframework.boot:spring-boot-starter-web'
+      }
+      
+      test {
+          jvmArgs '--add-opens', 'java.base/java.lang=ALL-UNNAMED'
+      }
+    learner_created: false
+  - name: src/qrcodeapi/AppConroller.java
+    visible: true
+    learner_created: true
+feedback_link: https://hyperskill.org/projects/385/stages/2290/implement#comment
+status: Solved
+feedback:
+  message: Congratulations!
+  time: "Sun, 18 Feb 2024 13:50:43 UTC"
+record: -1

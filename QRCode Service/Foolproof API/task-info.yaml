@@ -1,0 +1,119 @@
+type: edu
+files:
+  - name: src/qrcodeapi/Application.java
+    visible: true
+    text: |
+      package qrcodeapi;
+      
+      import org.springframework.boot.SpringApplication;
+      import org.springframework.boot.autoconfigure.SpringBootApplication;
+      
+      @SpringBootApplication
+      public class Application {
+          public static void main(String[] args) {
+              SpringApplication.run(Application.class, args);
+          }
+      }
+    learner_created: false
+  - name: test/QRCodeApiTest.java
+    visible: false
+    text: "import org.hyperskill.hstest.dynamic.DynamicTest;\nimport org.hyperskill.hstest.dynamic.input.DynamicTesting;\n\
+    import org.hyperskill.hstest.exception.outcomes.WrongAnswer;\nimport org.hyperskill.hstest.mocks.web.response.HttpResponse;\n\
+    import org.hyperskill.hstest.stage.SpringTest;\nimport org.hyperskill.hstest.testcase.CheckResult;\n\
+    \nimport java.net.URLEncoder;\nimport java.nio.charset.StandardCharsets;\nimport\
+    \ java.security.MessageDigest;\nimport java.security.NoSuchAlgorithmException;\n\
+    import java.util.Objects;\n\nimport static org.hyperskill.hstest.testing.expect.Expectation.expect;\n\
+    import static org.hyperskill.hstest.testing.expect.json.JsonChecker.isObject;\n\
+    import static org.hyperskill.hstest.testing.expect.json.JsonChecker.isString;\n\
+    \npublic class QRCodeApiTest extends SpringTest {\n    private static final String\
+    \ BAD_SIZE_MSG = \"Image size must be between 150 and 350 pixels\";\n    private\
+    \ static final String BAD_TYPE_MSG = \"Only png, jpeg and gif image types are\
+    \ supported\";\n    private static final String BAD_CORRECTION_MSG = \"Permitted\
+    \ error correction levels are L, M, Q, H\";\n    private static final String BAD_CONTENTS_MSG\
+    \ = \"Contents cannot be null or blank\";\n\n    CheckResult testGetHealth() {\n\
+    \        var url = \"/api/health\";\n        HttpResponse response = get(url).send();\n\
+    \n        checkStatusCode(response, 200);\n\n        return CheckResult.correct();\n\
+    \    }\n\n    CheckResult testGetQrCode(String contents,\n                   \
+    \           Integer size,\n                              String correction,\n\
+    \                              String imgType,\n                             \
+    \ String expectedHash) {\n\n        var url = \"/api/qrcode?contents=%s\".formatted(encodeUrl(contents));\n\
+    \        if (size != null) {\n            url += \"&size=%d\".formatted(size);\n\
+    \        }\n        if (correction != null) {\n            url += \"&correction=%s\"\
+    .formatted(correction);\n        }\n        if (imgType != null) {\n         \
+    \   url += \"&type=%s\".formatted(imgType);\n        }\n        HttpResponse response\
+    \ = get(url).send();\n\n        checkStatusCode(response, 200);\n        checkContentType(response,\
+    \ imgType);\n\n        var contentHash = getMD5Hash(response.getRawContent());\n\
+    \        if (!contentHash.equals(expectedHash)) {\n            return CheckResult.wrong(\"\
+    \"\"\n                    Response: GET %s\n                     \n          \
+    \          Response body does not contain a correct image:\n                 \
+    \   Expected image hash %s, but was %s\n                    Make sure the size,\
+    \ the contents and the format of the image are correct.\n                    \n\
+    \                    \"\"\".formatted(url, expectedHash, contentHash)\n      \
+    \      );\n        }\n\n        return CheckResult.correct();\n    }\n\n    CheckResult\
+    \ testGetQrCodeInvalidParams(String contents,\n                              \
+    \             int size,\n                                           String correction,\n\
+    \                                           String imgType,\n                \
+    \                           String message) {\n        var url = \"/api/qrcode?contents=%s&size=%d&correction=%s&type=%s\"\
+    \n                .formatted(encodeUrl(contents), size, correction, imgType);\n\
+    \n        HttpResponse response = get(url).send();\n\n        checkStatusCode(response,\
+    \ 400);\n        checkErrorMessage(response, message);\n\n        return CheckResult.correct();\n\
+    \    }\n\n    String[] contents = {\n            \"text content\",\n         \
+    \   \"mailto:name@company.com\",\n            \"geo:-27.07,109.21\",\n       \
+    \     \"tel:1234567890\",\n            \"smsto:1234567890:texting!\",\n      \
+    \      \"Here is some text\",\n            \"https://hyperskill.org\",\n     \
+    \       \"\"\"\n            BEGIN:VCARD\n            VERSION:3.0\n           \
+    \ N:John Doe\n            ORG:FAANG\n            TITLE:CEO\n            TEL:1234567890\n\
+    \            EMAIL:business@example.com\n            END:VCARD\"\"\"\n    };\n\
+    \n    @DynamicTest\n    DynamicTesting[] tests = {\n            this::testGetHealth,\n\
+    \n            () -> testGetQrCode(contents[1], null, null, null, \"f4d19902b0ae101de9b03b8aea5556dc\"\
+    ),\n            () -> testGetQrCode(contents[1], 200, null, null, \"357759acd42e878ce86bf7f00071df7d\"\
+    ),\n            () -> testGetQrCode(contents[1], null, \"H\", null, \"21d1f792360f6946a7583d79e8ae18ef\"\
+    ),\n            () -> testGetQrCode(contents[2], null, null, \"gif\", \"af3f3319944ad1271a3d2e3e5de12a30\"\
+    ),\n            () -> testGetQrCode(contents[3], 200, \"Q\", null, \"a524b79ddeff57aa74357f9b608b6dff\"\
+    ),\n            () -> testGetQrCode(contents[4], 200, null, \"jpeg\", \"2a700a58e2b593a998e428fae8f9f4e7\"\
+    ),\n            () -> testGetQrCode(contents[5], null, \"Q\", \"gif\", \"5208d69a5c3541c16e61fb846cd82f37\"\
+    ),\n            () -> testGetQrCode(contents[6], 200, \"H\", \"jpeg\", \"69879de9db73966792bacbbe69f06146\"\
+    ),\n\n            () -> testGetQrCodeInvalidParams(contents[0], 99, \"L\", \"\
+    gif\", BAD_SIZE_MSG),\n            () -> testGetQrCodeInvalidParams(contents[0],\
+    \ 351, \"L\", \"png\", BAD_SIZE_MSG),\n            () -> testGetQrCodeInvalidParams(contents[0],\
+    \ 451, \"L\", \"webp\", BAD_SIZE_MSG),\n            () -> testGetQrCodeInvalidParams(contents[0],\
+    \ 200, \"L\", \"webp\", BAD_TYPE_MSG),\n            () -> testGetQrCodeInvalidParams(\"\
+    \", 200, \"L\", \"webp\", BAD_CONTENTS_MSG),\n            () -> testGetQrCodeInvalidParams(\"\
+    \   \", 500, \"S\", \"webp\", BAD_CONTENTS_MSG),\n            () -> testGetQrCodeInvalidParams(contents[0],\
+    \ 500, \"S\", \"webp\", BAD_SIZE_MSG),\n            () -> testGetQrCodeInvalidParams(contents[0],\
+    \ 200, \"S\", \"webp\", BAD_CORRECTION_MSG)\n    };\n\n    private void checkStatusCode(HttpResponse\
+    \ response, int expected) {\n        var endpoint = response.getRequest().getEndpoint();\n\
+    \        var actual = response.getStatusCode();\n        if (actual != expected)\
+    \ {\n            throw new WrongAnswer(\"\"\"\n                    Request: GET\
+    \ %s\n                    \n                    Response has incorrect status\
+    \ code:\n                    Expected %d, but responded with %d\n            \
+    \        \n                    \"\"\".formatted(endpoint, expected, actual)\n\
+    \            );\n        }\n    }\n\n    private void checkContentType(HttpResponse\
+    \ response, String imgType) {\n        var endpoint = response.getRequest().getEndpoint();\n\
+    \        var expected = \"image/\" + (imgType == null ? \"png\" : imgType);\n\
+    \        var actual = response.getHeaders().get(\"Content-Type\");\n        if\
+    \ (!Objects.equals(expected, actual)) {\n            throw new WrongAnswer(\"\"\
+    \"\n                    Request: GET %s\n                    \n              \
+    \      Response has incorrect 'Content-Type' header:\n                    Expected\
+    \ \"%s\" but responded with \"%s\"\n                    \n                   \
+    \ \"\"\".formatted(endpoint, expected, actual)\n            );\n        }\n  \
+    \  }\n\n    private void checkErrorMessage(HttpResponse response, String message)\
+    \ {\n        var endpoint = response.getRequest().getEndpoint();\n        if (!response.getJson().isJsonObject())\
+    \ {\n            throw new WrongAnswer(\"\"\"\n                    Request: GET\
+    \ %s\n                    \n                    Response contains a wrong object:\n\
+    \                    Expected JSON but responded with %s\n                   \
+    \ \n                    \"\"\".formatted(endpoint, response.getContent().getClass())\n\
+    \            );\n        }\n\n        expect(response.getContent()).asJson().check(\n\
+    \                isObject().value(\"error\", isString(message))\n        );\n\
+    \    }\n\n    private String getMD5Hash(byte[] rawContent) {\n        try {\n\
+    \            var md = MessageDigest.getInstance(\"MD5\");\n            var hash\
+    \ = md.digest(rawContent);\n            var hexString = new StringBuilder();\n\
+    \            for (byte b : hash) {\n                hexString.append(\"%02x\"\
+    .formatted(b));\n            }\n            return hexString.toString();\n   \
+    \     } catch (NoSuchAlgorithmException e) {\n            throw new RuntimeException(e);\n\
+    \        }\n    }\n\n    private String encodeUrl(String param) {\n        return\
+    \ URLEncoder.encode(param, StandardCharsets.UTF_8);\n    }\n}\n"
+    learner_created: false
+feedback_link: https://hyperskill.org/projects/385/stages/2294/implement#comment
+status: Unchecked
+record: -1

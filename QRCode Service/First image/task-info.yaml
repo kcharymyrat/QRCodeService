@@ -1,0 +1,65 @@
+type: edu
+files:
+  - name: src/qrcodeapi/Application.java
+    visible: true
+    text: |
+      package qrcodeapi;
+      
+      import org.springframework.boot.SpringApplication;
+      import org.springframework.boot.autoconfigure.SpringBootApplication;
+      
+      @SpringBootApplication
+      public class Application {
+          public static void main(String[] args) {
+              SpringApplication.run(Application.class, args);
+          }
+      }
+    learner_created: false
+  - name: test/QRCodeApiTest.java
+    visible: false
+    text: "import org.hyperskill.hstest.dynamic.DynamicTest;\nimport org.hyperskill.hstest.dynamic.input.DynamicTesting;\n\
+    import org.hyperskill.hstest.exception.outcomes.WrongAnswer;\nimport org.hyperskill.hstest.mocks.web.response.HttpResponse;\n\
+    import org.hyperskill.hstest.stage.SpringTest;\nimport org.hyperskill.hstest.testcase.CheckResult;\n\
+    \nimport java.security.MessageDigest;\nimport java.security.NoSuchAlgorithmException;\n\
+    import java.util.Objects;\n\npublic class QRCodeApiTest extends SpringTest {\n\
+    \n    CheckResult testGetHealth() {\n        var url = \"/api/health\";\n    \
+    \    HttpResponse response = get(url).send();\n\n        checkStatusCode(response,\
+    \ 200);\n\n        return CheckResult.correct();\n    }\n\n    CheckResult testGetQrCode()\
+    \ {\n        var url = \"/api/qrcode\";\n        HttpResponse response = get(url).send();\n\
+    \n        checkStatusCode(response, 200);\n        checkContentType(response,\
+    \ \"png\");\n\n        var expectedHash = \"a370a8d3e1ee0f0184132a3c3b5d2952\"\
+    ;\n        var contentHash = getMD5Hash(response.getRawContent());\n        if\
+    \ (!contentHash.equals(expectedHash)) {\n            return CheckResult.wrong(\"\
+    \"\"\n                    Response: GET %s\n                     \n          \
+    \          Response body does not contain a correct image:\n                 \
+    \   Expected image hash %s, but was %s\n                    Make sure the size,\
+    \ the contents and the format of the image are correct.\n                    \n\
+    \                    \"\"\".formatted(url, expectedHash, contentHash)\n      \
+    \      );\n        }\n\n        return CheckResult.correct();\n    }\n\n    @DynamicTest\n\
+    \    DynamicTesting[] tests = {\n            this::testGetHealth,\n          \
+    \  this::testGetQrCode\n    };\n\n    private void checkStatusCode(HttpResponse\
+    \ response, int expected) {\n        var endpoint = response.getRequest().getEndpoint();\n\
+    \        var actual = response.getStatusCode();\n        if (actual != expected)\
+    \ {\n            throw new WrongAnswer(\"\"\"\n                    Request: GET\
+    \ %s\n                    \n                    Response has incorrect status\
+    \ code:\n                    Expected %d, but responded with %d\n            \
+    \        \n                    \"\"\".formatted(endpoint, expected, actual)\n\
+    \            );\n        }\n    }\n\n    private void checkContentType(HttpResponse\
+    \ response, String imgType) {\n        var endpoint = response.getRequest().getEndpoint();\n\
+    \        var expected = \"image/\" + imgType;\n        var actual = response.getHeaders().get(\"\
+    Content-Type\");\n        if (!Objects.equals(expected, actual)) {\n         \
+    \   throw new WrongAnswer(\"\"\"\n                    Request: GET %s\n      \
+    \              \n                    Response has incorrect 'Content-Type' header:\n\
+    \                    Expected \"%s\" but responded with \"%s\"\n             \
+    \       \n                    \"\"\".formatted(endpoint, expected, actual)\n \
+    \           );\n        }\n    }\n\n    private String getMD5Hash(byte[] rawContent)\
+    \ {\n        try {\n            var md = MessageDigest.getInstance(\"MD5\");\n\
+    \            var hash = md.digest(rawContent);\n            var hexString = new\
+    \ StringBuilder();\n            for (byte b : hash) {\n                hexString.append(\"\
+    %02x\".formatted(b));\n            }\n            return hexString.toString();\n\
+    \        } catch (NoSuchAlgorithmException e) {\n            throw new RuntimeException(e);\n\
+    \        }\n    }\n}\n"
+    learner_created: false
+feedback_link: https://hyperskill.org/projects/385/stages/2291/implement#comment
+status: Unchecked
+record: -1
