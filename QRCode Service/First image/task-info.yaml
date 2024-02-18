@@ -60,6 +60,75 @@ files:
     \        } catch (NoSuchAlgorithmException e) {\n            throw new RuntimeException(e);\n\
     \        }\n    }\n}\n"
     learner_created: false
+  - name: src/resources/application.properties
+    visible: true
+    learner_created: true
+  - name: build.gradle
+    visible: true
+    text: |
+      buildscript {
+          apply plugin: 'hyperskill'
+      
+          repositories {
+              mavenCentral()
+          }
+      
+          dependencies {
+              classpath "org.springframework.boot:spring-boot-gradle-plugin:$hs.spring.bootVersion"
+              classpath "io.spring.gradle:dependency-management-plugin:$hs.spring.dependencyManagementVersion"
+          }
+      }
+      
+      apply plugin: 'java'
+      apply plugin: 'org.springframework.boot'
+      apply plugin: 'io.spring.dependency-management'
+      
+      repositories {
+          mavenCentral()
+      }
+      
+      sourceSets.main.resources.srcDirs = ["src/resources"]
+      
+      dependencies {
+          implementation 'org.springframework.boot:spring-boot-starter'
+          implementation 'org.springframework.boot:spring-boot-starter-actuator'
+          implementation 'org.springframework.boot:spring-boot-starter-web'
+      }
+      
+      test {
+          jvmArgs '--add-opens', 'java.base/java.lang=ALL-UNNAMED'
+      }
+    learner_created: true
+  - name: src/qrcodeapi/AppConroller.java
+    visible: true
+    text: |
+      package qrcodeapi;
+      
+      import org.springframework.http.HttpStatus;
+      import org.springframework.web.bind.annotation.GetMapping;
+      import org.springframework.web.bind.annotation.ResponseStatus;
+      import org.springframework.web.bind.annotation.RestController;
+      
+      @RestController
+      public class AppConroller {
+      
+          @GetMapping("/api/health")
+          @ResponseStatus(HttpStatus.OK)
+          public void getHealth() {
+          }
+      
+          @GetMapping("/api/qrcode")
+          @ResponseStatus(HttpStatus.NOT_IMPLEMENTED)
+          public void getQrCode() {
+          }
+      }
+    learner_created: true
+  - name: src/qrcodeapi/AppConfigs.java
+    visible: true
+    learner_created: true
 feedback_link: https://hyperskill.org/projects/385/stages/2291/implement#comment
-status: Unchecked
+status: Solved
+feedback:
+  message: Congratulations!
+  time: "Sun, 18 Feb 2024 14:30:57 UTC"
 record: -1

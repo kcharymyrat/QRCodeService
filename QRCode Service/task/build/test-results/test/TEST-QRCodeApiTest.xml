@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="QRCodeApiTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2024-02-18T13:50:38" hostname="WIN-PK97IO7J39D" time="5.089">
+<testsuite name="QRCodeApiTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2024-02-18T14:30:52" hostname="WIN-PK97IO7J39D" time="4.865">
   <properties/>
-  <testcase name="start" classname="QRCodeApiTest" time="5.089"/>
+  <testcase name="start" classname="QRCodeApiTest" time="4.865"/>
   <system-out><![CDATA[?[1;31m
 Start test 1?[0m
 ?[0;34m
@@ -13,19 +13,19 @@ Start test 1?[0m
 ?[0m?[0;34m =========|_|==============|___/=/_/_/_/
 ?[0m?[0;34m :: Spring Boot ::                (v3.0.2)
 ?[0m?[0;34m
-?[0m?[0;34m2024-02-18T18:50:39.113+05:00  INFO 6376 --- [    Test worker] qrcodeapi.Application                    : Starting Application using Java 17.0.5 with PID 6376 (started by User in D:\JetBrainsWork\QRCode Service\QRCode Service\task)
-?[0m?[0;34m2024-02-18T18:50:39.121+05:00  INFO 6376 --- [    Test worker] qrcodeapi.Application                    : No active profile set, falling back to 1 default profile: "default"
-?[0m?[0;34m2024-02-18T18:50:41.412+05:00  INFO 6376 --- [    Test worker] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
-?[0m?[0;34m2024-02-18T18:50:41.429+05:00  INFO 6376 --- [    Test worker] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-?[0m?[0;34m2024-02-18T18:50:41.430+05:00  INFO 6376 --- [    Test worker] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.5]
-?[0m?[0;34m2024-02-18T18:50:41.531+05:00  INFO 6376 --- [    Test worker] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-?[0m?[0;34m2024-02-18T18:50:41.535+05:00  INFO 6376 --- [    Test worker] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2322 ms
-?[0m?[0;34m2024-02-18T18:50:42.370+05:00  INFO 6376 --- [    Test worker] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint(s) beneath base path '/actuator'
-?[0m?[0;34m2024-02-18T18:50:42.457+05:00  INFO 6376 --- [    Test worker] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
-?[0m?[0;34m2024-02-18T18:50:42.485+05:00  INFO 6376 --- [    Test worker] qrcodeapi.Application                    : Started Application in 4.056 seconds (process running for 5.151)
-?[0;34m2024-02-18T18:50:42.955+05:00  INFO 6376 --- [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-?[0m?[0;34m2024-02-18T18:50:42.956+05:00  INFO 6376 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-?[0m?[0;34m2024-02-18T18:50:42.958+05:00  INFO 6376 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+?[0m?[0;34m2024-02-18T19:30:53.412+05:00  INFO 17672 --- [    Test worker] qrcodeapi.Application                    : Starting Application using Java 17.0.5 with PID 17672 (started by User in D:\JetBrainsWork\QRCode Service\QRCode Service\task)
+?[0m?[0;34m2024-02-18T19:30:53.417+05:00  INFO 17672 --- [    Test worker] qrcodeapi.Application                    : No active profile set, falling back to 1 default profile: "default"
+?[0m?[0;34m2024-02-18T19:30:55.403+05:00  INFO 17672 --- [    Test worker] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+?[0m?[0;34m2024-02-18T19:30:55.423+05:00  INFO 17672 --- [    Test worker] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+?[0m?[0;34m2024-02-18T19:30:55.424+05:00  INFO 17672 --- [    Test worker] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.5]
+?[0m?[0;34m2024-02-18T19:30:55.561+05:00  INFO 17672 --- [    Test worker] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+?[0m?[0;34m2024-02-18T19:30:55.565+05:00  INFO 17672 --- [    Test worker] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2080 ms
+?[0m?[0;34m2024-02-18T19:30:56.483+05:00  INFO 17672 --- [    Test worker] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint(s) beneath base path '/actuator'
+?[0m?[0;34m2024-02-18T19:30:56.558+05:00  INFO 17672 --- [    Test worker] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+?[0m?[0;34m2024-02-18T19:30:56.582+05:00  INFO 17672 --- [    Test worker] qrcodeapi.Application                    : Started Application in 3.733 seconds (process running for 4.761)
+?[0;34m2024-02-18T19:30:57.072+05:00  INFO 17672 --- [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+?[0m?[0;34m2024-02-18T19:30:57.073+05:00  INFO 17672 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+?[0m?[0;34m2024-02-18T19:30:57.076+05:00  INFO 17672 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
 ?[0m?[1;31m
 Start test 2?[0m
 ]]></system-out>
