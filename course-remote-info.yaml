@@ -19,7 +19,7 @@ stages:
     is_completed: true
   - id: 2294
     step: 35509
-    is_completed: false
+    is_completed: true
 topics:
   0:
     - title: "HTTP: HyperText Transfer Protocol"
